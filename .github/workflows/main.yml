@@ -7,7 +7,7 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v3        
       - name: Compile LaTeX document
-        uses: DH-Yaroslav/TesrGit/action.yml@v1
+        uses: DH-Yaroslav/TesrGit/.github/workflows/action.yml@latest
         with:
           root_file: main.tex
       - name: Upload PDF file
