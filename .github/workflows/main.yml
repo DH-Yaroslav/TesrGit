@@ -7,7 +7,7 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v3        
       - name: Compile LaTeX document
-        uses: ./.github/workflows/action.yml@latest
+        uses: .github/workflows/action.yml@latest
         with:
           root_file: main.tex
       - name: Upload PDF file
