@@ -5,11 +5,65 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v3        
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: main.tex
+        uses: actions/checkout@v3      
+      - name: scenario
+      inputs:
+  root_file:
+    description: The root LaTeX file to be compiled
+    required: true
+    default: "main.tex"
+  glob_root_file:
+    description: Interpret the root_file input as bash glob pattern
+  working_directory:
+    description: The working directory for this action
+  work_in_root_file_dir:
+    description: Change directory into each root file's directory before compiling each documents
+  continue_on_error:
+     description: Continuing to build document even with LaTeX build errors
+  compiler:
+    description: The LaTeX engine to be invoked
+    default: latexmk
+  args:
+    description: Extra arguments to be passed to the LaTeX engine
+    default: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode"
+  extra_packages:
+    description: "[Deprecated] Install extra packages by tlmgr"
+  extra_system_packages:
+    description: Install extra packages by apk
+  extra_fonts:
+    description: Install extra .ttf/.otf fonts.
+  pre_compile:
+    description: Arbitrary bash codes to be executed before compiling LaTeX documents
+  post_compile:
+    description: Arbitrary bash codes to be executed after compiling LaTeX documents
+  latexmk_shell_escape:
+    description: Instruct latexmk to enable --shell-escape
+  latexmk_use_lualatex:
+    description: Instruct latexmk to use LuaLaTeX
+  latexmk_use_xelatex:
+    description: Instruct latexmk to use XeLaTeX
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.root_file }}
+    - ${{ inputs.glob_root_file }}
+    - ${{ inputs.working_directory }}
+    - ${{ inputs.work_in_root_file_dir }}
+    - ${{ inputs.continue_on_error }}
+    - ${{ inputs.compiler }}
+    - ${{ inputs.args }}
+    - ${{ inputs.extra_packages }}
+    - ${{ inputs.extra_system_packages }}
+    - ${{ inputs.extra_fonts }}
+    - ${{ inputs.pre_compile }}
+    - ${{ inputs.post_compile }}
+    - ${{ inputs.latexmk_shell_escape }}
+    - ${{ inputs.latexmk_use_lualatex }}
+    - ${{ inputs.latexmk_use_xelatex }}
+branding:
+  icon: book
+  color: blue
       - name: Upload PDF file
         uses: actions/upload-artifact@v3
         with:
